@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-accent="lime">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Andrei Reyes — UI & Graphic Designer</title>
+<meta name="description" content="Andrei Reyes: UI designer and graphic designer crafting seamless digital content and designs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0a; --panel:#0e0e0e; --fg:#f2f2f2; --muted:#8a8a8a; --line:#222; --dot:#ffffff14; --card:#121212;
+  --ac:#c6ff3d; --on-ac:#0a0a0a;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,monospace; --sans:'Inter',system-ui,sans-serif;
+}
+:root[data-accent="violet"]{--ac:#a78bfa}
+:root[data-accent="sunset"]{--ac:#ff7a45}
+:root[data-accent="cyan"]{--ac:#3de0ff}
+:root[data-theme="light"]{
+  --bg:#fafafa; --panel:#f3f3f3; --fg:#111; --muted:#6b6b6b; --line:#dcdcdc; --dot:#00000014; --card:#fff;
+  --ac:#4d7c0f; --on-ac:#fff;
+}
+:root[data-theme="light"][data-accent="violet"]{--ac:#7c3aed}
+:root[data-theme="light"][data-accent="sunset"]{--ac:#ea580c}
+:root[data-theme="light"][data-accent="cyan"]{--ac:#0e7490}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.6;
+  background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:14px 14px;background-attachment:fixed;
+  transition:background-color .3s,color .3s}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--ac);color:var(--on-ac)}
+:focus-visible{outline:2px solid var(--ac);outline-offset:3px;border-radius:2px}
+.mono{font-family:var(--mono)}
+[hidden]{display:none!important}
+#carvert .gallery img,#fashion .gallery img{aspect-ratio:16/10;object-fit:contain;background:#000}
+#carvert .gallery figure.wide img,#fashion .gallery figure.wide img{aspect-ratio:16/9}
+/* scroll progress + cursor glow */
+#bar{position:fixed;top:0;left:0;height:2px;width:0;background:var(--ac);z-index:60;box-shadow:0 0 10px var(--ac)}
+.glow{position:fixed;left:0;top:0;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;z-index:0;
+  background:radial-gradient(circle,color-mix(in srgb,var(--ac) 14%,transparent),transparent 65%);opacity:0;transition:opacity .4s}
+.glow.on{opacity:1}
+@media(hover:none){.glow{display:none}}
+
+/* sidebar */
+.side{position:fixed;inset:0 auto 0 0;width:222px;background:var(--panel);border-right:1px solid var(--line);
+  padding:26px 27px;display:flex;flex-direction:column;overflow-y:auto;z-index:10}
+.brand{font-family:var(--mono);font-weight:700;font-size:14px;margin-bottom:34px;display:flex;align-items:center;gap:8px}
+.brand::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ac);box-shadow:0 0 10px var(--ac)}
+.side nav a{display:block;font-family:var(--mono);font-size:12.5px;color:var(--muted);padding:6px 0;transition:color .15s,transform .15s}
+.side nav a:hover{color:var(--fg)}
+.side nav a.active{color:var(--ac);transform:translateX(4px)}
+.side nav a.active::before{content:"› "}
+.side hr{border:0;border-top:1px solid var(--line);margin:14px 0}
+.side .grow{flex:1;min-height:20px}
+.side .small{font-size:11.5px;color:var(--muted);line-height:1.5}
+.side .mail{font-family:var(--mono);font-size:11.5px;display:block;margin-top:6px}
+.side .mail:hover{color:var(--ac)}
+.kbd{font-family:var(--mono);font-size:10px;border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--muted)}
+.hintrow{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--muted);margin-bottom:6px;cursor:pointer;background:none;border:0;width:100%;font-family:var(--sans)}
+.hintrow:hover{color:var(--fg)}
+.tools{display:flex;gap:8px;align-items:center;margin:10px 0 4px}
+.tools .pill{background:transparent;border:1px solid var(--line);color:var(--muted);font-family:var(--mono);
+  font-size:11px;border-radius:99px;padding:6px 12px;cursor:pointer}
+.tools .pill:hover{color:var(--fg);border-color:var(--muted)}
+.swatches{display:flex;gap:8px;margin:12px 0 4px}
+.sw{width:18px;height:18px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0;outline:1px solid var(--line);outline-offset:2px;transition:transform .15s}
+.sw:hover{transform:scale(1.15)}
+.sw[aria-pressed="true"]{outline:2px solid var(--fg)}
+.sw[data-a="lime"]{background:#c6ff3d}.sw[data-a="violet"]{background:#a78bfa}
+.sw[data-a="sunset"]{background:#ff7a45}.sw[data-a="cyan"]{background:#3de0ff}
+
+/* main */
+main{margin-left:222px;padding:100px 24px 120px;position:relative;z-index:1}
+.wrap{max-width:624px;margin:0 auto}
+.hero{display:grid;grid-template-columns:288px 1fr;gap:40px;align-items:start}
+.photo{width:288px;height:288px;border-radius:2px;overflow:hidden;background:#000;position:relative;
+  transition:transform .2s ease-out;transform-style:preserve-3d;box-shadow:12px 12px 0 -2px color-mix(in srgb,var(--ac) 35%,transparent)}
+.photo img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.15);transition:filter .4s}
+.photo:hover img{filter:grayscale(0) contrast(1.05)}
+.hero h1{font-family:var(--mono);font-weight:500;font-size:40px;line-height:1.1;letter-spacing:-.02em;margin-bottom:12px}
+.role{font-family:var(--mono);font-size:13px;color:var(--ac);margin-bottom:20px;min-height:22px}
+.caret{display:inline-block;width:7px;height:14px;background:var(--ac);margin-left:2px;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.hero p{color:#d6d6d6;margin-bottom:20px}
+:root[data-theme="light"] .hero p{color:#333}
+.links{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.links a{transition:color .15s}
+.links a:hover{color:var(--ac)}
+.links a:first-child{color:var(--fg);font-weight:700}
+
+.strip{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);margin-top:56px}
+.strip>div{padding:20px 0;border-bottom:1px solid var(--line)}
+.strip>div+div{border-left:1px solid var(--line);padding-left:20px}
+.strip b{display:block;font-family:var(--mono);font-size:12px}
+.strip span{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+.strip.stats b{font-size:24px;font-weight:500;margin-bottom:6px;color:var(--ac)}
+
+/* ticker */
+.ticker{margin-top:28px;overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:12px 0;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.ticker-track{display:flex;gap:34px;width:max-content;animation:tick 26s linear infinite;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker-track span::after{content:"✦";margin-left:34px;color:var(--ac)}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+section{margin-top:96px;scroll-margin-top:60px}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--muted);margin-bottom:18px}
+.sec-head .n{color:var(--ac)}
+.sec-head em,.sec-head a{font-style:normal;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
+.sec-head a:hover{color:var(--ac)}
+
+.rows a,.rows div.row{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--line);padding:20px 0;font-weight:600;transition:padding .2s,color .2s}
+.rows a:hover{padding-left:10px;color:var(--ac)}
+.rows :last-child{border-bottom:1px solid var(--line)}
+.rows small{font-family:var(--mono);font-weight:400;font-size:11.5px;color:var(--muted);white-space:nowrap}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-family:var(--mono);font-size:11px;letter-spacing:.04em;background:transparent;color:var(--muted);border:1px solid var(--line);
+  border-radius:99px;padding:5px 13px;cursor:pointer;transition:all .15s}
+.chip:hover{color:var(--fg);border-color:var(--muted)}
+.chip[aria-pressed="true"]{background:var(--ac);color:var(--on-ac);border-color:var(--ac)}
+
+.gallery{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
+.gallery.three{grid-template-columns:repeat(3,1fr)}
+.gallery .wide{grid-column:1/-1}
+.gallery figure{background:var(--card);border:1px solid var(--line);overflow:hidden;border-radius:4px;position:relative;transition:border-color .2s,transform .2s}
+.gallery figure:hover{border-color:var(--ac);transform:translateY(-2px)}
+.gallery img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .35s;cursor:zoom-in}
+.gallery figure:hover img{transform:scale(1.03)}
+.gallery figure.pop{animation:pop .4s both}
+@keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+
+.skills{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;width:100%}
+.skills figure{margin:0;overflow:hidden;border:1px solid var(--line);border-radius:12px;background:var(--card);
+  transition:transform .25s,border-color .25s,box-shadow .25s}
+.skills figure:hover{transform:translateY(-5px);border-color:var(--ac);box-shadow:0 18px 40px color-mix(in srgb,var(--ac) 18%,transparent)}
+.skills img{display:block;width:100%;height:auto;cursor:zoom-in;transition:transform .5s}
+.skills figure:hover img{transform:scale(1.04)}
+
+.edu{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 0;display:flex;justify-content:space-between;gap:16px}
+.edu b{display:block}
+.edu span{color:var(--muted);font-size:13px}
+
+.contact-copy{color:var(--muted);max-width:480px;margin-bottom:18px}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;letter-spacing:.03em;padding:11px 18px;border-radius:99px;
+  border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer;transition:all .15s}
+.btn:hover{border-color:var(--ac);color:var(--ac);transform:translateY(-2px)}
+.btn.primary{background:var(--ac);color:var(--on-ac);border-color:var(--ac);font-weight:700}
+.btn.primary:hover{color:var(--on-ac);box-shadow:0 8px 24px color-mix(in srgb,var(--ac) 35%,transparent)}
+.addr{margin-top:14px;font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.side .mail{overflow-wrap:anywhere}
+
+footer{margin-top:100px;font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center}
+
+/* back to top */
+#up{position:fixed;right:22px;bottom:22px;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--fg);
+  cursor:pointer;font-size:16px;z-index:20;opacity:0;pointer-events:none;transform:translateY(10px);transition:all .25s}
+#up.show{opacity:1;pointer-events:auto;transform:none}
+#up:hover{background:var(--ac);color:var(--on-ac);border-color:var(--ac)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(14px);transition:opacity .6s,transform .6s}
+.rv.in{opacity:1;transform:none}
+
+/* lightbox */
+#lb{position:fixed;inset:0;background:#000e;display:none;align-items:center;justify-content:center;z-index:70;padding:56px 64px;flex-direction:column;gap:12px}
+#lb.on{display:flex}
+#lb img{max-width:100%;max-height:100%;min-height:0;object-fit:contain;border-radius:4px}
+#lb .cap{font-family:var(--mono);font-size:11.5px;color:#bbb}
+#lb button{position:absolute;background:#ffffff14;border:1px solid #ffffff30;color:#fff;border-radius:50%;width:42px;height:42px;font-size:18px;cursor:pointer}
+#lb button:hover{background:var(--ac);color:var(--on-ac);border-color:var(--ac)}
+#lb .prev{left:14px;top:50%;transform:translateY(-50%)}
+#lb .next{right:14px;top:50%;transform:translateY(-50%)}
+#lb .close{right:14px;top:14px}
+
+/* command palette */
+#pal{position:fixed;inset:0;background:#000a;display:none;align-items:flex-start;justify-content:center;padding-top:14vh;z-index:80}
+#pal.on{display:flex}
+.pbox{width:min(520px,92vw);background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 30px 80px #0009}
+.pbox input{width:100%;background:transparent;border:0;border-bottom:1px solid var(--line);color:var(--fg);font-family:var(--mono);font-size:14px;padding:16px 18px;outline:none}
+.pbox ul{list-style:none;max-height:320px;overflow-y:auto;padding:6px}
+.pbox li{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:8px;font-size:13.5px;cursor:pointer}
+.pbox li small{font-family:var(--mono);font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.pbox li[aria-selected="true"]{background:color-mix(in srgb,var(--ac) 16%,transparent);color:var(--ac)}
+.pbox .empty{padding:18px;color:var(--muted);font-size:13px;text-align:center}
+
+/* mobile */
+.top{display:none}
+@media(max-width:860px){
+  .side{display:none}
+  .top{display:flex;position:sticky;top:0;z-index:30;background:var(--panel);border-bottom:1px solid var(--line);
+    padding:14px 18px;gap:18px;overflow-x:auto;align-items:center;font-family:var(--mono);font-size:12px;white-space:nowrap}
+  .top .brand{margin:0}
+  .top a,.top button{color:var(--muted);background:none;border:0;font:inherit;cursor:pointer}
+  .top .acc{color:var(--ac)}
+  main{margin:0;padding:48px 18px 80px}
+  .hero{grid-template-columns:1fr;gap:28px}
+  .photo{width:100%;height:auto;aspect-ratio:1}
+  .hero h1{font-size:34px}
+.skills{grid-template-columns:1fr;width:100%;left:0;transform:none;gap:14px}
+  .gallery.three{grid-template-columns:repeat(2,1fr)}
+  #lb{padding:56px 12px}
+  #lb .prev{left:6px}#lb .next{right:6px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .rv{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div class="glow" id="glow"></div>
+
+<aside class="side">
+  <div class="brand">Andrei Reyes</div>
+  <nav id="nav">
+    <a href="#projects">Projects</a>
+    <a href="#carvert">Carvert UI</a>
+    <a href="#fashion">Fashion Frenzy UI</a>
+    <a href="#graphics">Graphic Designs</a>
+    <a href="#content">Content</a>
+    <hr>
+    <a href="#skills">Skills</a>
+    <a href="#education">Education</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <div class="grow"></div>
+  <button class="hintrow" type="button" id="openPal">Quick jump <span><span class="kbd">Alt</span> <span class="kbd">K</span></span></button>
+  <div class="swatches" role="group" aria-label="Color way">
+    <button class="sw" data-a="lime" aria-label="Lime" aria-pressed="true"></button>
+    <button class="sw" data-a="violet" aria-label="Violet" aria-pressed="false"></button>
+    <button class="sw" data-a="sunset" aria-label="Sunset" aria-pressed="false"></button>
+    <button class="sw" data-a="cyan" aria-label="Cyan" aria-pressed="false"></button>
+  </div>
+  <div class="tools">
+    <button class="pill js-theme" type="button">◐ theme</button>
+  </div>
+  <hr>
+  <p class="small">For work, collabs &amp; everything else, reach me at</p>
+  <a class="mail" href="mailto:a.reyes.itwork@gmail.com?subject=Hello%20Andrei%20%E2%80%94%20portfolio%20inquiry&amp;body=Hi%20Andrei%2C%0D%0A%0D%0AI%20saw%20your%20portfolio%20and%20would%20like%20to%20talk%20about%3A%0D%0A%0D%0A">✉ a.reyes.itwork@gmail.com</a>
+</aside>
+
+<div class="top">
+  <span class="brand">Andrei Reyes</span>
+  <a href="#projects">projects</a><a href="#carvert">carvert</a><a href="#fashion">fashion</a>
+  <a href="#graphics">graphics</a><a href="#content">content</a><a href="#education">education</a><a href="#contact">contact</a>
+  <button type="button" class="js-theme">◐</button>
+  <button type="button" class="js-cycle acc">● color</button>
+  <button type="button" id="openPalM">⌕</button>
+</div>
+
+<main>
+<div class="wrap">
+
+  <div class="hero rv">
+    <div class="photo" id="photo"><img src="card-template2.png" alt="Andrei Reyes"></div>
+    <div>
+      <h1>Andrei Reyes</h1>
+      <div class="role"><span id="typed"></span><i class="caret"></i></div>
+      <p>I'm a UI designer and graphic designer focused on crafting seamless digital content and designs.</p>
+      <p>I’m a Bachelor of Computer Science graduate from Cavite State University, and I enjoy turning ideas into practical solutions that people can actually use.
+</p>
+      <div class="links">
+        <a href="https://github.com/cecirro" target="_blank" rel="noopener">github ↗</a>
+        <a href="https://www.linkedin.com/in/andrei-reyes-bab51b304/" target="_blank" rel="noopener">linkedin ↗</a>
+        <a href="mailto:a.reyes.itwork@gmail.com?subject=Hello%20Andrei%20%E2%80%94%20portfolio%20inquiry&amp;body=Hi%20Andrei%2C%0D%0A%0D%0AI%20saw%20your%20portfolio%20and%20would%20like%20to%20talk%20about%3A%0D%0A%0D%0A">email ↗</a>
+        <a href="https://www.instagram.com/dei.bydei/" target="_blank" rel="noopener">instagram ↗</a>
+        <a href="https://www.facebook.com/Andreilicmuan.1121" target="_blank" rel="noopener">facebook ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="strip rv">
+    <div><b>UI & Graphic Design</b><span>Discipline</span></div>
+    <div><b>Virtual Assistant</b><span>Discipline</span></div>
+    <div><b>CvSU</b><span>BS Computer Science · 2026</span></div>
+  </div>
+  <div class="strip stats rv" style="margin-top:0;border-top:0">
+    <div><b><i class="count" data-to="5">5</i></b><span>Projects</span></div>
+    <div><b><i class="count" data-to="3">3</i></b><span>YouTube channels</span></div>
+    <div><b><i class="count" data-to="20" data-suffix="+">20+</i></b><span>Graphic works</span></div>
+  </div>
+
+  <div class="ticker rv" aria-hidden="true">
+    <div class="ticker-track" id="tick"></div>
+  </div>
+
+  <section id="projects" class="rv">
+    <div class="sec-head"><span><i class="n">01</i> — projects</span><em>5 items</em></div>
+    <div class="rows">
+      <a href="https://cecirro.github.io/FashionFrenzy/" target="_blank" rel="noopener">E-commerce Website <small>Fashion Frenzy ↗</small></a>
+      <a href="#carvert">Carvert Game <small>Game design ↓</small></a>
+      <a href="https://andreilabs.wixsite.com/districtgym" target="_blank" rel="noopener">District Gym <small>Website ↗</small></a>
+      <a href="#graphics" data-filter="merch">A.I Content<small>Graphic design ↓</small></a>
+      <a href="#graphics" data-filter="memes">Graphic Works <small>Graphic design ↓</small></a>
+    </div>
+  </section>
+
+  <section id="carvert" class="rv">
+    <div class="sec-head"><span><i class="n">02</i> — carvert</span><em>game</em></div>
+    <div class="gallery">
+      <figure class="wide"><img src="carvert.png" alt="Carvert" loading="lazy"></figure>
+      <figure><img src="mainp.png" alt="Carvert main page" loading="lazy"></figure>
+      <figure><img src="carvert2.png" alt="Carvert screen 2" loading="lazy"></figure>
+      <figure class="wide"><img src="carvert3.png" alt="Carvert screen 3" loading="lazy"></figure>
+    </div>
+  </section>
+
+  <section id="fashion" class="rv">
+    <div class="sec-head"><span><i class="n">03</i> — fashion frenzy</span><a href="https://cecirro.github.io/FashionFrenzy/" target="_blank" rel="noopener">VISIT SITE ↗</a></div>
+    <div class="gallery">
+      <figure class="wide"><img src="ecom.png" alt="Fashion Frenzy" loading="lazy"></figure>
+      <figure><img src="ecom5.png" alt="Fashion Frenzy page" loading="lazy"></figure>
+      <figure><img src="ecom9.png" alt="Fashion Frenzy page" loading="lazy"></figure>
+      <figure><img src="ecom7.png" alt="Fashion Frenzy page" loading="lazy"></figure>
+      <figure><img src="ecom4.png" alt="Fashion Frenzy page" loading="lazy"></figure>
+    </div>
+  </section>
+
+  <section id="graphics" class="rv">
+    <div class="sec-head"><span><i class="n">04</i> — graphic designs</span><em id="gcount">14 works</em></div>
+    <div class="chips" id="chips" role="group" aria-label="Filter graphic designs">
+      <button class="chip" data-f="all" aria-pressed="true">All</button>
+      <button class="chip" data-f="merch" aria-pressed="false">A.I</button>
+      <button class="chip" data-f="memes" aria-pressed="false">NON A.I</button>
+    </div>
+    <div class="gallery three" id="ggal">
+      <figure class="wide" data-cat="memes"><img src="VC%20leads%2020%2B%20(4).png" alt="Graphic design" loading="lazy"></figure>
+      <figure data-cat="memes"><img src="apple-web1.png" alt="Graphic design" loading="lazy"></figure>
+      <figure data-cat="memes"><img src="Artboard%201.png" alt="Graphic design" loading="lazy"></figure>
+      <figure data-cat="memes"><img src="Artboard%202.png" alt="Graphic design" loading="lazy"></figure>
+      <figure data-cat="memes"><img src="NAI1.png" alt="Graphic design" loading="lazy"></figure>
+      <figure data-cat="merch"><img src="ai1.png" alt="A.I Content" loading="lazy"></figure>
+      <figure data-cat="merch"><img src="ai2.png" alt="A.I Content" loading="lazy"></figure>
+      <figure data-cat="merch"><img src="ai3.png" alt="A.I Content" loading="lazy"></figure>
+      <figure data-cat="merch"><img src="ai4.png" alt="A.I Content" loading="lazy"></figure>
+      <figure data-cat="merch"><img src="ai5.png" alt="A.I Contente" loading="lazy"></figure>
+      <figure data-cat="merch"><img src="ai6.png" alt="A.I Content" loading="lazy"></figure>
+      <figure data-cat="merch"><img src="ai9.png" alt="A.I Content" loading="lazy"></figure>
+      <figure data-cat="merch"><img src="ai10.png" alt="A.I Content" loading="lazy"></figure>
+      <figure data-cat="merch"><img src="ai11.png" alt="A.I Content" loading="lazy"></figure>
+      <figure data-cat="merch"><img src="ai7.png" alt="A.I Contente" loading="lazy"></figure>
+      <figure data-cat="merch"><img src="ai8.jfif" alt="A.I Content" loading="lazy"></figure>
+      <figure data-cat="memes"><img src="NAI2.png" alt="Graphic design" loading="lazy"></figure>
+      <figure data-cat="memes"><img src="NAI3.png" alt="Graphic design" loading="lazy"></figure>
+      <figure data-cat="memes"><img src="NAI4.png" alt="Graphic design" loading="lazy"></figure>
+  
+    </div>
+  </section>
+
+  <section id="content" class="rv">
+    <div class="sec-head"><span><i class="n">05</i> — content</span><em>video editing</em></div>
+    <div class="rows">
+      <a href="https://www.youtube.com/@StayH9rd" target="_blank" rel="noopener">@StayH9rd <small>YouTube Shorts ↗</small></a>
+      <a href="https://www.youtube.com/@mobagrounds108" target="_blank" rel="noopener">@mobagrounds108 <small>YouTube content ↗</small></a>
+      <a href="https://drive.google.com/drive/folders/1_z_PT4tgPeuYfA-Ew_5kPMJdGByZIiuI?usp=sharing" target="_blank" rel="noopener">YouTube client <small>Sample edits ↗</small></a>
+    </div>
+  </section>
+
+  <section id="skills" class="rv">
+    <div class="sec-head"><span><i class="n">06</i> — skills</span></div>
+    <div class="skills">
+<figure><img src="fs.png" alt="Fast learner" loading="lazy"></figure>
+<figure><img src="ts.png" alt="Management and organization skills" loading="lazy"></figure>
+<figure><img src="uiskill.png" alt="UI design skills" loading="lazy"></figure>
+<figure><img src="gds.png" alt="Graphic design skills" loading="lazy"></figure>
+    </div>
+  </section>
+
+  <section id="education" class="rv">
+    <div class="sec-head"><span><i class="n">07</i> — education</span></div>
+    <div class="edu">
+      <div><b>Cavite State University</b><span>Bachelor of Computer Science</span></div>
+      <small class="mono" style="color:var(--muted)">2022 – 2026</small>
+    </div>
+  </section>
+
+  <section id="contact" class="rv">
+    <div class="sec-head"><span><i class="n">08</i> — contact</span><em>let's talk</em></div>
+    <p class="contact-copy">Have a project, a collab, or just want to say hi? Send me a message and I'll get back to you.</p>
+    <div class="cta">
+      <a class="btn primary" href="mailto:a.reyes.itwork@gmail.com?subject=Hello%20Andrei%20%E2%80%94%20portfolio%20inquiry&amp;body=Hi%20Andrei%2C%0D%0A%0D%0AI%20saw%20your%20portfolio%20and%20would%20like%20to%20talk%20about%3A%0D%0A%0D%0A">✉ Email me</a>
+      <a class="btn" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=a.reyes.itwork@gmail.com&amp;su=Hello%20Andrei%20%E2%80%94%20portfolio%20inquiry&amp;body=Hi%20Andrei%2C%0A%0AI%20saw%20your%20portfolio%20and%20would%20like%20to%20talk%20about%3A%0A%0A" target="_blank" rel="noopener">Open in Gmail ↗</a>
+      <button class="btn" type="button" id="copyMail">Copy email</button>
+    </div>
+    <p class="addr">a.reyes.itwork@gmail.com</p>
+  </section>
+
+  <footer>© <span id="yr"></span> Andrei Reyes</footer>
+</div>
+</main>
+
+<button id="up" type="button" aria-label="Back to top">↑</button>
+
+<div id="lb" role="dialog" aria-label="Image viewer">
+  <button class="close" type="button" aria-label="Close">✕</button>
+  <button class="prev" type="button" aria-label="Previous">←</button>
+  <img alt="">
+  <div class="cap" id="lbcap"></div>
+  <button class="next" type="button" aria-label="Next">→</button>
+</div>
+
+<div id="pal" role="dialog" aria-label="Quick jump">
+  <div class="pbox">
+    <input id="pin" type="text" placeholder="Jump to a section, link or action…" autocomplete="off" spellcheck="false">
+    <ul id="plist"></ul>
+  </div>
+</div>
+
+<script>
+(function(){
+  var root=document.documentElement;
+  var $=function(s,c){return (c||document).querySelector(s)};
+  var $$=function(s,c){return [].slice.call((c||document).querySelectorAll(s))};
+  var store={
+    get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},
+    set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+  };
+  var accents=['lime','violet','sunset','cyan'];
+
+  /* ---------- theme + color way ---------- */
+  function setTheme(t){root.dataset.theme=t;store.set('theme',t)}
+  function setAccent(a){
+    root.dataset.accent=a;store.set('accent',a);
+    $$('.sw').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.a===a))});
+  }
+  function toggleTheme(){setTheme(root.dataset.theme==='dark'?'light':'dark')}
+  function cycleAccent(){setAccent(accents[(accents.indexOf(root.dataset.accent)+1)%accents.length])}
+  var st=store.get('theme'),sa=store.get('accent');
+  if(st)root.dataset.theme=st;
+  if(sa&&accents.indexOf(sa)>-1)setAccent(sa);
+  $$('.js-theme').forEach(function(b){b.onclick=toggleTheme});
+  $$('.js-cycle').forEach(function(b){b.onclick=cycleAccent});
+  $$('.sw').forEach(function(b){b.onclick=function(){setAccent(b.dataset.a)}});
+
+  $('#yr').textContent=new Date().getFullYear();
+
+  /* ---------- typing roles ---------- */
+  var roles=['UI Designer','Graphic Designer','Video Editor','Computer Science Graduate'];
+  var typed=$('#typed'),ri=0,ci=0,del=false;
+  var still=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(still){typed.textContent=roles.join(' · ')}
+  else{(function tick(){
+    var w=roles[ri];
+    typed.textContent='› '+w.slice(0,ci);
+    if(!del&&ci<w.length){ci++;return setTimeout(tick,75)}
+    if(!del){del=true;return setTimeout(tick,1400)}
+    if(ci>0){ci--;return setTimeout(tick,35)}
+    del=false;ri=(ri+1)%roles.length;setTimeout(tick,300);
+  })()}
+
+  /* ---------- ticker ---------- */
+  var words=['UI Design','Graphic Design','Web Design','Game Design','Merchandise','Memes','Video Editing','E-commerce'];
+  var html=words.map(function(w){return '<span>'+w+'</span>'}).join('');
+  $('#tick').innerHTML=html+html;
+
+  /* ---------- reveal + count-up ---------- */
+  function countUp(el){
+    var to=+el.dataset.to,suf=el.dataset.suffix||'',t0=null;
+    if(still){el.textContent=to+suf;return}
+    (function f(t){
+      if(!t0)t0=t;var p=Math.min((t-t0)/900,1);
+      el.textContent=Math.round(to*(1-Math.pow(1-p,3)))+suf;
+      if(p<1)requestAnimationFrame(f);
+    })(performance.now());
+  }
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      $$('.count',e.target).forEach(countUp);
+      io.unobserve(e.target);
+    }
+  })},{threshold:.08});
+  $$('.rv').forEach(function(el){io.observe(el)});
+
+  /* ---------- active nav ---------- */
+  var links=$$('#nav a');
+  var so=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){links.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id)})}
+  })},{rootMargin:'-40% 0px -55% 0px'});
+  $$('section[id]').forEach(function(s){so.observe(s)});
+
+  /* ---------- scroll progress + back to top ---------- */
+  var bar=$('#bar'),up=$('#up');
+  function onScroll(){
+    var h=document.documentElement,max=h.scrollHeight-h.clientHeight;
+    bar.style.width=(max>0?h.scrollTop/max*100:0)+'%';
+    up.classList.toggle('show',h.scrollTop>600);
+  }
+  addEventListener('scroll',onScroll,{passive:true});onScroll();
+  up.onclick=function(){scrollTo({top:0,behavior:'smooth'})};
+
+  /* ---------- cursor glow + photo tilt ---------- */
+  var glow=$('#glow');
+  addEventListener('mousemove',function(e){
+    glow.style.transform='translate('+e.clientX+'px,'+e.clientY+'px)';glow.classList.add('on');
+  },{passive:true});
+  document.addEventListener('mouseleave',function(){glow.classList.remove('on')});
+  var photo=$('#photo');
+  if(!still){
+    photo.addEventListener('mousemove',function(e){
+      var r=photo.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+      photo.style.transform='perspective(700px) rotateY('+(x*10)+'deg) rotateX('+(-y*10)+'deg)';
+    });
+    photo.addEventListener('mouseleave',function(){photo.style.transform=''});
+  }
+
+  /* ---------- gallery filter ---------- */
+  var gal=$('#ggal'),chips=$$('.chip');
+  function applyFilter(f){
+    var n=0;
+    chips.forEach(function(c){c.setAttribute('aria-pressed',String(c.dataset.f===f))});
+    $$('figure',gal).forEach(function(fig){
+      var show=f==='all'||fig.dataset.cat===f;
+      fig.hidden=!show;
+      if(show){n++;fig.classList.remove('pop');void fig.offsetWidth;fig.classList.add('pop')}
+    });
+    $('#gcount').textContent=n+' works';
+  }
+  chips.forEach(function(c){c.onclick=function(){applyFilter(c.dataset.f)}});
+  $$('[data-filter]').forEach(function(a){a.addEventListener('click',function(){applyFilter(a.dataset.filter)})});
+
+  /* ---------- lightbox with arrows ---------- */
+  var lb=$('#lb'),lbi=$('img',lb),cap=$('#lbcap'),set=[],idx=0;
+  function show(){
+    var im=set[idx];lbi.src=im.currentSrc||im.src;lbi.alt=im.alt;
+    cap.textContent=im.alt+'  ·  '+(idx+1)+' / '+set.length;
+    $('.prev',lb).style.display=$('.next',lb).style.display=set.length>1?'':'none';
+  }
+  function step(d){if(!lb.classList.contains('on'))return;idx=(idx+d+set.length)%set.length;show()}
+$$('.gallery,.skills').forEach(function(g){
+    g.addEventListener('click',function(e){
+      var im=e.target.closest('img');if(!im)return;
+      set=$$('figure',g).filter(function(f){return !f.hidden}).map(function(f){return $('img',f)});
+      idx=set.indexOf(im);show();lb.classList.add('on');
+    });
+  });
+  $('.prev',lb).onclick=function(e){e.stopPropagation();step(-1)};
+  $('.next',lb).onclick=function(e){e.stopPropagation();step(1)};
+  $('.close',lb).onclick=function(){lb.classList.remove('on')};
+  lb.onclick=function(e){if(e.target===lb)lb.classList.remove('on')};
+  var tx=null;
+  lb.addEventListener('touchstart',function(e){tx=e.touches[0].clientX},{passive:true});
+  lb.addEventListener('touchend',function(e){
+    if(tx===null)return;var d=e.changedTouches[0].clientX-tx;
+    if(Math.abs(d)>50)step(d<0?1:-1);tx=null;
+  });
+
+  /* ---------- email ---------- */
+  var EMAIL='a.reyes.itwork@gmail.com';
+  var MAILTO='mailto:'+EMAIL+'?subject='+encodeURIComponent('Hello Andrei — portfolio inquiry')+
+    '&body='+encodeURIComponent('Hi Andrei,\r\n\r\nI saw your portfolio and would like to talk about:\r\n\r\n');
+  var cm=$('#copyMail');
+  cm.onclick=function(){
+    var done=function(){cm.textContent='Copied ✓';setTimeout(function(){cm.textContent='Copy email'},1800)};
+    if(navigator.clipboard){navigator.clipboard.writeText(EMAIL).then(done,function(){cm.textContent=EMAIL})}
+    else{cm.textContent=EMAIL}
+  };
+
+  /* ---------- command palette ---------- */
+  var pal=$('#pal'),pin=$('#pin'),plist=$('#plist'),sel=0,shown=[];
+  var items=[
+    {t:'Projects',k:'section',go:'#projects'},
+    {t:'Carvert',k:'section',go:'#carvert'},
+    {t:'Fashion Frenzy',k:'section',go:'#fashion'},
+    {t:'Graphic Designs',k:'section',go:'#graphics'},
+    {t:'Content',k:'section',go:'#content'},
+    {t:'Skills',k:'section',go:'#skills'},
+    {t:'Education',k:'section',go:'#education'},
+    {t:'Contact',k:'section',go:'#contact'},
+    {t:'Email me',k:'action',fn:function(){location.href=MAILTO}},
+    {t:'Open Fashion Frenzy site',k:'link',url:'https://cecirro.github.io/FashionFrenzy/'},
+    {t:'Open District Gym site',k:'link',url:'https://andreilabs.wixsite.com/districtgym'},
+    {t:'GitHub',k:'link',url:'https://github.com/cecirro'},
+    {t:'LinkedIn',k:'link',url:'https://www.linkedin.com/in/andrei-reyes-bab51b304/'},
+    {t:'Instagram',k:'link',url:'https://www.instagram.com/dei.bydei/'},
+    {t:'X',k:'link',url:'https://x.com/Misterdreeeee'},
+    {t:'Toggle dark / light',k:'action',fn:toggleTheme},
+    {t:'Next color way',k:'action',fn:cycleAccent},
+    {t:'Copy page link',k:'action',fn:function(){
+      var u=location.href.split('#')[0];
+      if(navigator.clipboard)navigator.clipboard.writeText(u).catch(function(){});
+    }}
+  ];
+  function render(){
+    var q=pin.value.trim().toLowerCase();
+    shown=items.filter(function(i){return !q||i.t.toLowerCase().indexOf(q)>-1||i.k.indexOf(q)>-1});
+    if(sel>=shown.length)sel=0;
+    plist.innerHTML=shown.length?'':'<div class="empty">No matches</div>';
+    shown.forEach(function(it,i){
+      var li=document.createElement('li');
+      li.setAttribute('aria-selected',String(i===sel));
+      li.innerHTML='<span></span><small>'+it.k+'</small>';
+      li.firstChild.textContent=it.t;
+      li.onmouseenter=function(){sel=i;render()};
+      li.onclick=function(){run(it)};
+      plist.appendChild(li);
+    });
+  }
+  function openPal(){pal.classList.add('on');pin.value='';sel=0;render();setTimeout(function(){pin.focus()},0)}
+  function closePal(){pal.classList.remove('on')}
+  function run(it){
+    closePal();
+    if(it.go){var el=$(it.go);if(el)el.scrollIntoView({behavior:'smooth'})}
+    else if(it.url){window.open(it.url,'_blank','noopener')}
+    else if(it.fn){it.fn()}
+  }
+  pin.addEventListener('input',function(){sel=0;render()});
+  pal.addEventListener('click',function(e){if(e.target===pal)closePal()});
+  $('#openPal').onclick=openPal;
+  $('#openPalM').onclick=openPal;
+
+  /* ---------- keyboard ---------- */
+  document.addEventListener('keydown',function(e){
+    var k=e.key;
+    if((e.altKey||e.ctrlKey||e.metaKey)&&k.toLowerCase()==='k'){e.preventDefault();pal.classList.contains('on')?closePal():openPal();return}
+    if(pal.classList.contains('on')){
+      if(k==='Escape')closePal();
+      else if(k==='ArrowDown'){e.preventDefault();sel=(sel+1)%Math.max(shown.length,1);render()}
+      else if(k==='ArrowUp'){e.preventDefault();sel=(sel-1+shown.length)%Math.max(shown.length,1);render()}
+      else if(k==='Enter'&&shown[sel]){e.preventDefault();run(shown[sel])}
+      return;
+    }
+    if(lb.classList.contains('on')){
+      if(k==='Escape')lb.classList.remove('on');
+      else if(k==='ArrowRight')step(1);
+      else if(k==='ArrowLeft')step(-1);
+    }
+  });
+})();
+</script>
+</body>
+</html>
